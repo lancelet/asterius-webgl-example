@@ -8,19 +8,10 @@ warp -v -d asterius-bin
 
 Then visit: http://localhost:3000/awgl.html
 
-# Re-compilation in Docker
-
-Prepare container:
+# Re-compilation in interactive Docker image
 
 ```
-./docker-interactive.sh   # start interactive Docker session
-ahc-cabal new-update
-mkdir -p asterius-bin
-```
-
-Compile:
-
-```
-cd asterius-bin
-ahc-cabal new-install . -j1 --symlink-bindir . && ahc-dist --browser --input-exe awgl
+./docker-interactive.sh     # start interactive Docker session
+./inside-docker-prepare.sh  # prepare the container
+./inside-docker-build.sh    # build
 ```
