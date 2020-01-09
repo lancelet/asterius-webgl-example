@@ -11,7 +11,7 @@ Then visit: http://localhost:3000/awgl.html
 # Re-compilation in interactive Docker image
 
 ```
-./docker-interactive.sh     # start interactive Docker session
-./inside-docker-prepare.sh  # prepare the container
-./inside-docker-build.sh    # build
+./docker-interactive.sh        # start interactive Docker session
+bash inside-docker-prepare.sh  # prepare the container
+bash inside-docker-build.sh    # build
 ```
