@@ -1,7 +1,7 @@
 module Windowing where
 
-import Asterius.Types
-import Data.Bits (testBit)
+import           Asterius.Types
+import           Data.Bits                      ( testBit )
 
 newtype Canvas = Canvas { unCanvas :: JSVal }
 
@@ -19,7 +19,7 @@ data Button
   | Secondary
   | Auxilary
   deriving (Show)
-  
+
 data MouseEvent
   = MouseEvent
     { mouseClientX :: Int
@@ -29,15 +29,15 @@ data MouseEvent
   deriving (Show)
 
 create :: IO (Windowing IO)
-create = pure $
-  Windowing
-  { createCanvas = Canvas <$> rawCreateCanvas
-  , sizeToFull   = rawSizeToFull . unCanvas
-  , consoleDebug = \message -> rawConsoleDebug (toJSString message)
+create = pure $ Windowing
+  { createCanvas           = Canvas <$> rawCreateCanvas
+  , sizeToFull             = rawSizeToFull . unCanvas
+  , consoleDebug           = \message -> rawConsoleDebug (toJSString message)
   , addResizeEventListener = \action -> do
-      jsFn <- makeHaskellCallback action
-      rawAddWindowListener (toJSString "resize") jsFn
-  , addMouseMoveCallback = \canvas action -> do
+                               jsFn <- makeHaskellCallback action
+                               rawAddWindowListener (toJSString "resize") jsFn
+  , addMouseMoveCallback   =
+    \canvas action -> do
       let jsValCallback = \jsObject -> do
             mouseEvent <- convertMouseEvent jsObject
             action mouseEvent
@@ -50,15 +50,13 @@ convertMouseEvent obj = do
   clientX <- rawGetClientX obj
   clientY <- rawGetClientY obj
   buttons <- rawGetButtons obj
-  pure MouseEvent
-    { mouseClientX = clientX
-    , mouseClientY = clientY
-    , mouseButtons = convertButtonsBitField buttons
-    }
+  pure MouseEvent { mouseClientX = clientX
+                  , mouseClientY = clientY
+                  , mouseButtons = convertButtonsBitField buttons
+                  }
 
 convertButtonsBitField :: Int -> [Button]
-convertButtonsBitField x =
-  concat
+convertButtonsBitField x = concat
   [ if testBit x 0 then [Primary] else []
   , if testBit x 1 then [Secondary] else []
   , if testBit x 2 then [Auxilary] else []

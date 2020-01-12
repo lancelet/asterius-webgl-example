@@ -17,6 +17,7 @@ library
     , asterius-prelude
     , colour
     , linear
+    , vector
 
 executable awgl
   main-is: Main.hs
@@ -27,3 +28,5 @@ executable awgl
     , asterius-webgl-example
     , asterius-prelude
     , colour
+    , linear
+    , vector
